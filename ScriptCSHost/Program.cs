@@ -12,9 +12,10 @@ namespace ScriptCSHost
     {
         static void Main(string[] args)
         {
-            string[] files = new string[] { @"C:\app\app.csx", @"C:\app\app2.csx" };
-
-            ExecuteFiles(files);
+            
+            const string fileDirectory = @"C:\app\ScriptCSHost\CSX Files\";
+            var files = Directory.GetFiles(fileDirectory, "*.csx");
+            FileManager.ExecuteFiles(files);
 
            
             Console.WriteLine("Done all files");
@@ -22,30 +23,6 @@ namespace ScriptCSHost
 
         }
 
-        private static void ExecuteFiles(string[] files){
-            for (var i=0;i<files.Length;i++)
-            {
-                var file = files[i];
-                ExecuteFile(file);
-            }
-        }
-        private static void ExecuteFile(string fileToExecute)
-        {
-            Console.WriteLine("Executing " + fileToExecute);
-            string output = string.Empty;
-            System.Diagnostics.Process p = new System.Diagnostics.Process();
-            p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            p.StartInfo.FileName = "cmd.exe";
-            p.StartInfo.Arguments = @"/c scriptcs " + fileToExecute;
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.Start();
-            output = p.StandardOutput.ReadToEnd();
-
-           
-            Console.Write(output);
-
-            Console.WriteLine("Done executing " + fileToExecute);
-        }
+  
     }
 }
