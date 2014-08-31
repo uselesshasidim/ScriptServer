@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSX Files", "CSX Files", "{
 	ProjectSection(SolutionItems) = preProject
 		CSX Files\app.csx = CSX Files\app.csx
 		CSX Files\app2.csx = CSX Files\app2.csx
-		ScriptCSHost\readme.md = ScriptCSHost\readme.md
+		Overview.md = Overview.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptCSHostTests", "ScriptCSHostTests\ScriptCSHostTests.csproj", "{982FEC0A-F68B-40F3-B75A-711B45BFF210}"
