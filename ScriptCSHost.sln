@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSX Files", "CSX Files", "{
 		CSX Files\app2.csx = CSX Files\app2.csx
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptCSHostTests", "ScriptCSHostTests\ScriptCSHostTests.csproj", "{982FEC0A-F68B-40F3-B75A-711B45BFF210}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{157EA609-513A-4DDE-985F-F89139BE7E71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{157EA609-513A-4DDE-985F-F89139BE7E71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{157EA609-513A-4DDE-985F-F89139BE7E71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{982FEC0A-F68B-40F3-B75A-711B45BFF210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{982FEC0A-F68B-40F3-B75A-711B45BFF210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{982FEC0A-F68B-40F3-B75A-711B45BFF210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{982FEC0A-F68B-40F3-B75A-711B45BFF210}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
