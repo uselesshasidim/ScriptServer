@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,20 +11,22 @@ namespace ScriptCSHost
     public class FileManager
     {
 
-        internal static List<CSXFile> CSXFiles = new List<CSXFile>();
         const string fileFilter = "*.csx";
-        private static string _HostDirectory = string.Empty;
+        internal List<CSXFile> CSXFiles = new List<CSXFile>();
+        private string _HostDirectory = string.Empty;
 
-        internal static void Initialize(string hostDirectory)
+        private IFileSystem _FileSystem;
+        public FileManager(string hostDirectory, IFileSystem fileSystem)
         {
-            // set internal variables
+            _FileSystem = fileSystem;
             _HostDirectory = hostDirectory;
 
+
             // Get directory files
-            var files = Directory.GetFiles(hostDirectory, fileFilter);
+            var files = _FileSystem.Directory.GetFiles(hostDirectory, fileFilter);
 
             // Parse them
-            FileManager.ParseFiles(files);
+            ParseFiles(files);
 
             // Execute them once
             ExecuteFiles();
@@ -33,23 +36,30 @@ namespace ScriptCSHost
             watcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.Size;
             watcher.Changed += watcher_Changed;
             watcher.EnableRaisingEvents = true;
+
+        }
+        public FileManager(string hostDirectory):
+            this(hostDirectory, new FileSystem())
+        {
+
         }
 
-        internal static void ParseFiles(string[] files)
+  
+        internal void ParseFiles(string[] files)
         {
             foreach (var file in files)
             {
-                var csxFile = CSXFile.LoadFile(file);
+                var csxFile = new CSXFile(_FileSystem, file);
                 CSXFiles.Add(csxFile);
             }
         }
 
-        internal static void ExecuteFiles()
+        internal void ExecuteFiles()
         {
             ExecuteFiles(CSXFiles.Select(f => f.FullPath).ToArray<string>());
         }
 
-        internal static void ExecuteFiles(string[] files)
+        internal  void ExecuteFiles(string[] files)
         {
             for (var i = 0; i < files.Length; i++)
             {
@@ -58,7 +68,7 @@ namespace ScriptCSHost
             }
         }
 
-        internal static void ExecuteFile(string fileToExecute)
+        internal  void ExecuteFile(string fileToExecute)
         {
             Console.WriteLine("Executing " + fileToExecute);
             string output = string.Empty;
@@ -77,15 +87,15 @@ namespace ScriptCSHost
             Console.WriteLine("Done executing " + fileToExecute);
         }
 
-        static void watcher_Changed(object sender, FileSystemEventArgs e)
+        void watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            var attr = File.GetAttributes(e.FullPath);
+            var attr = _FileSystem.File.GetAttributes(e.FullPath);
             if (attr.HasFlag(FileAttributes.Directory))
             {
                 return;
             }
             Console.WriteLine(e.FullPath + " changed");
-            FileManager.ExecuteFile(e.FullPath);
+            ExecuteFile(e.FullPath);
         }
      
     }

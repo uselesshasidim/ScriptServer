@@ -14,8 +14,8 @@ namespace ScriptCSHost
         {
 
             const string fileDirectory = @"C:\app\ScriptCSHost\CSX Files\";
-            
-            FileManager.Initialize(fileDirectory);
+
+            FileManager fileManager = new FileManager(fileDirectory);
      
             Console.Read();
            
