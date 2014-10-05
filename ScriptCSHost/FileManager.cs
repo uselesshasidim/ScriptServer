@@ -11,27 +11,29 @@ namespace ScriptCSHost
     public class FileManager
     {
 
-        const string fileFilter = "*.csx";
-        internal List<CSXFile> CSXFiles = new List<CSXFile>();
-        private string _HostDirectory = string.Empty;
+        #region Private Variables
 
+        const string _FileFilter = "*.csx";
+        public List<CSXFile> CSXFiles = new List<CSXFile>();
+        private string _HostDirectory = string.Empty;
         private IFileSystem _FileSystem;
+
+        #endregion
+
+        #region Factory
+
         public FileManager(string hostDirectory, IFileSystem fileSystem)
         {
             _FileSystem = fileSystem;
             _HostDirectory = hostDirectory;
 
-
-            // Get directory files
-            var files = _FileSystem.Directory.GetFiles(hostDirectory, fileFilter);
-
-            // Parse them
-            ParseFiles(files);
+            // Parse files in current directory
+            ParseFiles();
 
             // Execute them once
             ExecuteFiles();
 
-            var watcher = new FileSystemWatcher(hostDirectory, fileFilter);
+            var watcher = new FileSystemWatcher(hostDirectory, _FileFilter);
 
             watcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.Size;
             watcher.Changed += watcher_Changed;
@@ -44,22 +46,34 @@ namespace ScriptCSHost
 
         }
 
-  
-        internal void ParseFiles(string[] files)
+        #endregion
+
+
+        public void ParseFiles()
         {
+
+            // Get directory files
+            var files = _FileSystem.Directory.GetFiles(_HostDirectory, _FileFilter);
+            ParseFiles(files);
+        }
+
+        public void ParseFiles(string[] files)
+        {
+            CSXFiles.Clear();
             foreach (var file in files)
             {
-                var csxFile = new CSXFile(_FileSystem, file);
+                var csxFile = new CSXFile(new SystemTimer(), _FileSystem, file);
                 CSXFiles.Add(csxFile);
             }
         }
 
-        internal void ExecuteFiles()
+
+        public void ExecuteFiles()
         {
             ExecuteFiles(CSXFiles.Select(f => f.FullPath).ToArray<string>());
         }
 
-        internal  void ExecuteFiles(string[] files)
+        public  void ExecuteFiles(string[] files)
         {
             for (var i = 0; i < files.Length; i++)
             {
@@ -68,7 +82,7 @@ namespace ScriptCSHost
             }
         }
 
-        internal  void ExecuteFile(string fileToExecute)
+        public  void ExecuteFile(string fileToExecute)
         {
             Console.WriteLine("Executing " + fileToExecute);
             string output = string.Empty;

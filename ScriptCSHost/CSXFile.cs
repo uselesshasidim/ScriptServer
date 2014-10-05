@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
@@ -12,13 +13,14 @@ namespace ScriptCSHost
     public class CSXFile
     {
         private IFileSystem _FileSystem;
-        public string FullPath { get; set; }
-        public Schedule Schedule { get; set; }
-        public Timer Timer { get; set; }
+        public Schedule Schedule { get; private set; }
+        public ITimer Timer { get; private set; }
+        public string FullPath { get; private set; }
 
-        public CSXFile(IFileSystem fileSystem, string fullPath)
+        public CSXFile(ITimer timer,  IFileSystem fileSystem, string fullPath)
         {
             _FileSystem = fileSystem;
+            Timer = timer;
             Schedule = new Schedule();
 
             FullPath = fullPath;
@@ -35,13 +37,32 @@ namespace ScriptCSHost
             Schedule.RunEvery = new TimeSpan(hour, minute, sec);
 
             // setup timer
+            Timer.Interval = Schedule.RunEvery.TotalMilliseconds;
+            Timer.TimerTicked += Timer_TimerTicked;
 
         }
+
+        void Timer_TimerTicked(object sender, TimerTickEventArgs e)
+        {
+            Execute();
+        }
         public CSXFile(string fullPath):
-            this(new FileSystem(), fullPath)
+            this(new SystemTimer(), new FileSystem(), fullPath)
         {
             
         }
 
+
+        public virtual Process Execute()
+        {
+            Process p = new Process();
+            //p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            p.StartInfo.FileName = "cmd.exe";
+            p.StartInfo.Arguments = "/c scriptcs \"" + FullPath + "\"";
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.Start();
+            return p;
+        }
     }
 }
