@@ -39,6 +39,7 @@ namespace ScriptCSHost
             // setup timer
             Timer.Interval = Schedule.RunEvery.TotalMilliseconds;
             Timer.TimerTicked += Timer_TimerTicked;
+            Timer.Start();
 
         }
 
@@ -52,7 +53,7 @@ namespace ScriptCSHost
             
         }
 
-
+            
         public virtual Process Execute()
         {
             Process p = new Process();

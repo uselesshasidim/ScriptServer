@@ -27,12 +27,10 @@ namespace ScriptCSHost
             _FileSystem = fileSystem;
             _HostDirectory = hostDirectory;
 
-            // Parse files in current directory
-            ParseFiles();
+            LoadFiles();
 
-            // Execute them once
-            ExecuteFiles();
 
+            return;
             var watcher = new FileSystemWatcher(hostDirectory, _FileFilter);
 
             watcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.Size;
@@ -49,56 +47,18 @@ namespace ScriptCSHost
         #endregion
 
 
-        public void ParseFiles()
+        public void LoadFiles()
         {
 
             // Get directory files
             var files = _FileSystem.Directory.GetFiles(_HostDirectory, _FileFilter);
-            ParseFiles(files);
-        }
 
-        public void ParseFiles(string[] files)
-        {
             CSXFiles.Clear();
             foreach (var file in files)
             {
                 var csxFile = new CSXFile(new SystemTimer(), _FileSystem, file);
                 CSXFiles.Add(csxFile);
             }
-        }
-
-
-        public void ExecuteFiles()
-        {
-            ExecuteFiles(CSXFiles.Select(f => f.FullPath).ToArray<string>());
-        }
-
-        public  void ExecuteFiles(string[] files)
-        {
-            for (var i = 0; i < files.Length; i++)
-            {
-                var file = files[i];
-                ExecuteFile(file);
-            }
-        }
-
-        public  void ExecuteFile(string fileToExecute)
-        {
-            Console.WriteLine("Executing " + fileToExecute);
-            string output = string.Empty;
-            System.Diagnostics.Process p = new System.Diagnostics.Process();
-            p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            p.StartInfo.FileName = "cmd.exe";
-            p.StartInfo.Arguments = "/c scriptcs \"" + fileToExecute + "\"";
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.Start();
-            output = p.StandardOutput.ReadToEnd();
-
-
-            Console.Write(output);
-
-            Console.WriteLine("Done executing " + fileToExecute);
         }
 
         void watcher_Changed(object sender, FileSystemEventArgs e)
@@ -108,8 +68,13 @@ namespace ScriptCSHost
             {
                 return;
             }
-            Console.WriteLine(e.FullPath + " changed");
-            ExecuteFile(e.FullPath);
+
+            var csxFile = CSXFiles.SingleOrDefault(f => f.FullPath == e.FullPath);
+
+            if (csxFile != null)
+            {
+                csxFile.Execute();
+            }
         }
      
     }

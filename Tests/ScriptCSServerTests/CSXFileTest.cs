@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using ScriptCSHostTests.Helpers;
 
 namespace ScriptCSHostTests{    
 
@@ -17,31 +18,19 @@ namespace ScriptCSHostTests{
     public class CSXFileTest
     {
 
-        #region Private Methods
-        private FileStub GetFile()
+        [Test]
+        public void WHEN_File_IsLoaded_AND_First_Line_Has_Value_0_0_2_THEN_Its_Schedule_Is_Set_To_Run_Every_2_Seconds()
         {
-            return GetFile(new Mock<ITimer>());
+            var file = FileHelper.GetFile_0_0_2(new Mock<ITimer>().Object);
+            Assert.AreEqual(2, file.Schedule.RunEvery.Seconds);
+            Assert.AreEqual(0, file.Schedule.RunEvery.Minutes);
+            Assert.AreEqual(0, file.Schedule.RunEvery.Hours);
         }
-
-        private FileStub GetFile(Mock<ITimer> mockTimer)
-        {
-            return new FileStub(mockTimer.Object, DataHelper.GetFileSystem(), DataHelper.HostDirectory + DataHelper.MockCSXFile1Path);
-
-        }
-
-
-        private CSXFile GetFile_1_5_0()
-        {
-            Mock<ITimer> timer = new Mock<ITimer>();
-            return new CSXFile(timer.Object, DataHelper.GetFileSystem(), DataHelper.HostDirectory + DataHelper.MockCSXFile2Path);
-        }
-        #endregion
-
 
         [Test]
         public void WHEN_File_IsLoaded_AND_First_Line_Has_Value_0_5_0_THEN_Its_Schedule_Is_Set_To_Run_Every_5_Minutes()
         {
-            var file = GetFile();
+            var file = FileHelper.GetFile_0_5_0();
             Assert.AreEqual(5, file.Schedule.RunEvery.Minutes);
             Assert.AreEqual(0, file.Schedule.RunEvery.Hours);         
         }
@@ -49,7 +38,7 @@ namespace ScriptCSHostTests{
         [Test]
         public void WHEN_File_IsLoaded_AND_First_Line_Has_Value_1_5_0_THEN_Its_Schedule_Is_Set_To_Run_Every_1_Hour_And_5_Minutes()
         {
-            var file = GetFile_1_5_0();
+            var file = FileHelper.GetFile_1_5_0();
             Assert.AreEqual(5, file.Schedule.RunEvery.Minutes);
             Assert.AreEqual(1, file.Schedule.RunEvery.Hours);
         }
@@ -60,18 +49,19 @@ namespace ScriptCSHostTests{
             var timer = new Mock<ITimer>();
             timer.SetupProperty(p => p.Interval);
 
-            var file = GetFile(timer);
+            var file = FileHelper.GetFile_0_5_0(timer);
             
             Assert.AreEqual(file.Schedule.RunEvery.TotalMilliseconds, timer.Object.Interval);
 
         }
+
 
         [Test]
         public void WHEN_Timer_Ticked_The_File_Is_Executed()
         {
             // Load file with 5 seconds schedule
             var timer = new Mock<ITimer>();
-            var file = GetFile(timer);
+            var file = FileHelper.GetFile_0_5_0(timer);
             
 
             // Mock like a tick was raised
@@ -82,32 +72,39 @@ namespace ScriptCSHostTests{
 
         }
 
-        public class FileStub : CSXFile
+        [Test]
+        public void WHEN_File_Is_Loaded_THEN_Timer_Is_Started()
         {
-            public bool FileExecuted { get; set; }
-            public FileStub(string fullPath):base(fullPath)
-            {
+            var timer = new Mock<ITimer>();
 
-            }
+            var file = FileHelper.GetFile_0_0_2(timer.Object);
 
-            public FileStub(ITimer timer, IFileSystem fileSystem, string fullPath):base(timer, fileSystem,fullPath)
-            {
-
-            }
-            public override System.Diagnostics.Process Execute()
-            {
-                var p =  base.Execute();
-                FileExecuted = true;
-                return p;
-            }
+            timer.Verify(e => e.Start());
         }
+
+        [Test]
+        public void WHEN_File_Loaded_AND_Schedule_Is_0_0_2_THEN_File_Is_Executed_Twice_In_5_Seconds()
+        {
+            var timer = new SystemTimer();
+            
+
+            var file = FileHelper.GetFile_0_0_2(timer);
+
+            System.Threading.Thread.Sleep(5000);
+            var expectedCount = 2;
+            var actual = file.ExecutionCount;
+
+            Assert.AreEqual(expectedCount, actual);
+        }
+
+     
 
         [Test]
         public void WHEN_Execute_Is_Called_THEN_The_CSX_File_Is_Exected()
         {
 
 		    // Arrange file
-			var file = GetFile();
+            var file = FileHelper.GetFile_0_5_0();
 
 			// Act
 			var p = file.Execute();
@@ -122,7 +119,7 @@ namespace ScriptCSHostTests{
         [Test]
         public void WHEN_Execute_Is_Called_AND_File_Completes_Executing_THEN_Its_Process_Is_Destroyed()
         {
-            var file = GetFile();
+            var file = FileHelper.GetFile_0_5_0();
             var p = file.Execute();
 
             System.Threading.Thread.Sleep(6000);
