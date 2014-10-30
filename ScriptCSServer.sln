@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31010.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSX Files", "CSX Files", "{A01E754F-A923-4037-B103-FBD62A43A580}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,6 +15,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptCSServer", "ScriptCSServer\ScriptCSServer.csproj", "{157EA609-513A-4DDE-985F-F89139BE7E71}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptCSServerTests", "Tests\ScriptCSServerTests\ScriptCSServerTests.csproj", "{982FEC0A-F68B-40F3-B75A-711B45BFF210}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1E7BD956-CE05-4E42-A680-ACC92DA941BF}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
