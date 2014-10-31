@@ -10,17 +10,11 @@ namespace ScriptCSHost
 {
     class Program
     {
-
         static void Main(string[] args)
         {
-
             FileManager fileManager = new FileManager(ConfigurationManager.AppSettings["WatchDirectory"]);
-     
             Console.Read();
-           
-
         }
-
   
     }
 }
