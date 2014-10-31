@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -13,9 +14,7 @@ namespace ScriptCSHost
         static void Main(string[] args)
         {
 
-            const string fileDirectory = @"C:\app\ScriptCSHost\CSX Files\";
-
-            FileManager fileManager = new FileManager(fileDirectory);
+            FileManager fileManager = new FileManager(ConfigurationManager.AppSettings["WatchDirectory"]);
      
             Console.Read();
            
