@@ -1,6 +1,6 @@
 ﻿# Overview
 
-No more creating a ScriptCS file, copying it over to the server where it needs to run, and then log into the server to run it; or to setup a scheudle when the file should run.
+No more creating a ScriptCS files, copying it over to the server where it needs to run, and then log into the server to run it; or to setup a scheudle when the file should run.
 
 When ScriptCS Server runs it watches a folder for ScriptCS files. When you drop (or ftp) a file into that folder, or if you change a file in that folder, the server will pick it up automatically and run it
 
