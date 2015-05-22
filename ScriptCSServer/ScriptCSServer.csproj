@@ -51,9 +51,12 @@
     <Compile Include="CSXFile.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="ITimer.cs" />
+    <Compile Include="ITimerFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule.cs" />
+    <Compile Include="SystemTimer.cs" />
+    <Compile Include="SystemTimerFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

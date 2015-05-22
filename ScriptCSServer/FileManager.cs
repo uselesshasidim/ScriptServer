@@ -17,15 +17,17 @@ namespace ScriptCSHost
         public List<CSXFile> CSXFiles = new List<CSXFile>();
         private string _HostDirectory = string.Empty;
         private IFileSystem _FileSystem;
+        private ITimerFactory _TimerFactory;
 
         #endregion
 
         #region Factory
 
-        public FileManager(string hostDirectory, IFileSystem fileSystem)
+        public FileManager(string hostDirectory, IFileSystem fileSystem, ITimerFactory timerFactory)
         {
             _FileSystem = fileSystem;
             _HostDirectory = hostDirectory;
+            _TimerFactory = timerFactory;
 
             LoadFiles();
 
@@ -39,7 +41,7 @@ namespace ScriptCSHost
 
         }
         public FileManager(string hostDirectory):
-            this(hostDirectory, new FileSystem())
+            this(hostDirectory, new FileSystem(), new SystemTimerFactory())
         {
 
         }
@@ -56,7 +58,7 @@ namespace ScriptCSHost
             CSXFiles.Clear();
             foreach (var file in files)
             {
-                var csxFile = new CSXFile(new SystemTimer(), _FileSystem, file);
+                var csxFile = new CSXFile(_TimerFactory.GetTimer(), _FileSystem, file);
                 CSXFiles.Add(csxFile);
             }
         }

@@ -20,7 +20,7 @@ namespace ScriptCSHostTests
          
             var fileSystem = FileHelper.GetMockFileSystem();
 
-            FileManager fileManager = new FileManager(FileHelper.HostDirectory, fileSystem);
+            FileManager fileManager = new FileManager(FileHelper.HostDirectory, fileSystem, new SystemTimerFactory());
 
             Assert.AreEqual(3, fileManager.CSXFiles.Count);
 
