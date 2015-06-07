@@ -1,13 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31010.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSX Files", "CSX Files", "{A01E754F-A923-4037-B103-FBD62A43A580}"
 	ProjectSection(SolutionItems) = preProject
 		CSX Files\app.csx = CSX Files\app.csx
 		CSX Files\app2.csx = CSX Files\app2.csx
-		Overview.md = Overview.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{01FD0C78-E25D-4EF6-B987-FE62A2F619CC}"
