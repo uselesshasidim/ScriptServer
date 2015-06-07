@@ -1,2 +1,2 @@
 # ScriptServer
-Server that run self-scheduled scripts by dropping them in a folder
+Server that runs self-scheduled scripts by dropping them in a folder
