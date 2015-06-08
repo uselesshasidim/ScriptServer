@@ -14,7 +14,7 @@ On top of a ScriptCS file you can specify its schedule when it should run, or if
 1. Install ScriptServer to run as a service
 
 # Configuring The Server
-In the folder where the server was installed you will find the app.config file, open that file to configure the server. Note: you will need to restart the service in order for the server to pickup the new config changes. Remember these are service configurations, you don't need to use this to configure individual ScriptCS files. ScriptFiles, you just need to drop into the folder and forget about it.
+In the folder where the server was installed you will find the app.config file, open that file to configure the server. Note: you will need to restart the service in order for the server to pickup the new config changes. Remember these are server configurations, you don't need to use this to configure individual ScriptCS files. ScriptFiles, you just need to drop into the folder and forget about it.
 
 1. WatchDirectory: The directory the server should watch for ScriptCS files
 
