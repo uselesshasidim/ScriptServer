@@ -28,5 +28,3 @@ Means every 1 hour, 2 minutes and 3 seconds
         //SCHEDULE-TIME-SPAN: 0 2 3
 
 Means every 2 minutes
-
-Updated by Yitzchok Neuahus
