@@ -2,7 +2,7 @@
 
 No more creating ScriptCS files, copying it over to the server where it needs to run, and then log into the server to run it; or to setup a scheudle when the file should run.
 
-When ScriptCS Server runs it watches a folder for ScriptCS files. When you drop or sftp (Danger! using plain ftp to drop ScriptCS files is dangerous) a file into that folder, or if you change a file in that folder, the server will pick it up automatically and run it
+When ScriptCS Server runs, it watches a folder for ScriptCS files. When you drop or sftp (Danger! using plain ftp to drop ScriptCS files is dangerous) a file into that folder, or if you change a file in that folder, the server will pick it up automatically and run it
 
 On top of a ScriptCS file you can specify its schedule when it should run, or if you leave it out the server will run it once.
 
